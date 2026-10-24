@@ -24,4 +24,4 @@ npx jscpd src --min-tokens 50 --threshold 5
 
 ## Current Baseline
 
-Not measured yet (bootstrap only).
+2026-10-24 (spec 001): 1 clone (6 lines, `QueueRow`/`WatchedRow`), 0.19% duplicated lines (48 files, 3199 lines in `src/`).

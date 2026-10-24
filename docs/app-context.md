@@ -6,11 +6,7 @@ Couch Queue is a personal Android app (React Native, Expo, TypeScript) for one u
 
 ## Status
 
-Shell, the Fila tab (see "Fila tab" below) and the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. The `Já vistos` tab is also done (see below). See `docs/specs/001-couch-queue-app.md` for the planned behavior.
-
-## Planned
-
-- `Já vistos` tab: watched history per group with `Voltar para a lista` and delete (retention already runs on start).
+Spec 001 is implemented: shell, `Fila`, `Já vistos` and `Manutenção` (groups, streamings, history period, backup, restore, reset). Detailed behavior is in `docs/specs/001-couch-queue-app.md`.
 
 ## Data
 
@@ -47,4 +43,4 @@ Rules live in `src/lib/titles.ts` (pure functions). The queue of a group is its 
 
 Groups and streamings: add (default names `Grupo N` / `Streaming N`), rename inline, delete with confirmation. Deleting the last group is blocked (`É preciso manter ao menos um grupo.`); deleting a group with titles asks to also delete them; a streaming used by titles cannot be deleted. History period chips: `1 mês`, `3 meses`, `6 meses`, `12 meses`, `Nunca apagar`; choosing a shorter period asks for confirmation only when titles would be deleted, then saves and purges. Backup shares a `.cqb` file, restore validates it and asks before replacing data, reset asks before clearing.
 
-Device settings (`useDeviceSetting`, AsyncStorage): history period at `@couch-queue-app/history/v1` (`{ keepMonths }`, `null` = never). The purge of old watched titles runs once per app start, only after both the data and the setting loaded, and never after a failed read of either. Selected group at `@couch-queue-app/selected-group/v1` (non-empty string or `null`, `normalizeSelectedGroup`); `CouchQueueApp` resolves it with `resolveGroupId`, so a deleted or restored-away group falls back to the first group. `Fila` and (later) `Já vistos` share it.
+Device settings (`useDeviceSetting`, AsyncStorage): history period at `@couch-queue-app/history/v1` (`{ keepMonths }`, `null` = never). The purge of old watched titles runs once per app start, only after both the data and the setting loaded, and never after a failed read of either. Selected group at `@couch-queue-app/selected-group/v1` (non-empty string or `null`, `normalizeSelectedGroup`); `CouchQueueApp` resolves it with `resolveGroupId`, so a deleted or restored-away group falls back to the first group. `Fila` and `Já vistos` share it.

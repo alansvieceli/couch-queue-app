@@ -1,6 +1,6 @@
 # Coverage Baseline
 
-Not measured yet (bootstrap only).
+2026-10-24 (spec 001): `src/lib/` at 100% statements, 100% branches, 100% functions, 100% lines (62 tests).
 
 ## Command
 
