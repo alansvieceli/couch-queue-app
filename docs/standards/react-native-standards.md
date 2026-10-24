@@ -4,6 +4,8 @@ Practical rules for this app. Keep code simple; apply a rule when it removes rea
 
 ## Structure
 
+Modules named below (`src/hooks/`, `useAppState`, `useDeviceSetting`, `src/lib/appState.ts`) are planned and do not exist until their tasks land; `src/lib/` currently holds only `ids.ts`.
+
 - `src/lib/`: pure TypeScript logic (no React, no React Native imports). All business rules live here and are unit tested.
 - `src/hooks/`: state and side effects. `useAppState` and `useDeviceSetting` are the only code that reads or writes AsyncStorage.
 - `src/components/common/`: reusable, feature-agnostic components (buttons, modal shell, fields, tab bar, header).

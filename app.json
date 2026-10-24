@@ -4,16 +4,25 @@
     "slug": "couch-queue-app",
     "version": "0.1.0",
     "orientation": "portrait",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "dark",
     "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E77C9A",
+        "foregroundImage": "./assets/adaptive-icon-foreground.png"
+      },
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "resize",
       "package": "br.com.couchqueue.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
         "expo-splash-screen",
         {
+          "image": "./assets/splash-logo.png",
           "backgroundColor": "#1A1222",
           "resizeMode": "contain",
           "imageWidth": 180

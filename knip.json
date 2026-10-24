@@ -9,14 +9,10 @@
   "entry": ["src/lib/ids.ts!"],
   "ignoreDependencies": [
     "expo-updates",
-    "@expo-google-fonts/fraunces",
-    "@expo/vector-icons",
     "@react-native-async-storage/async-storage",
     "expo-constants",
     "expo-crypto",
     "expo-document-picker",
-    "expo-file-system",
-    "expo-status-bar",
-    "react-native-safe-area-context"
+    "expo-file-system"
   ]
 }

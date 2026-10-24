@@ -6,11 +6,10 @@ Couch Queue is a personal Android app (React Native, Expo, TypeScript) for one u
 
 ## Status
 
-Bootstrap only: tooling, standards, specs and a placeholder `App.tsx`. No feature is implemented yet. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
+App shell only: Veludo theme, branding (popcorn bucket icon, splash, header wordmark `Couch Queue`), and the three tabs `Fila`, `Já vistos`, `Manutenção` with placeholder screens. No queue, history or data feature is implemented yet. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
 
 ## Planned
 
-- Tabs `Fila`, `Já vistos`, `Manutenção`.
 - Per-group queue with manual drag-and-drop order, filter by streaming service, watched history auto-deleted after a configurable period (default 3 months).
 - Manutenção: groups, streaming services, history period, backup (`.cqb`), restore, reset.
 

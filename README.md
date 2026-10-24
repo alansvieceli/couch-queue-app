@@ -4,7 +4,7 @@ Personal Android app (React Native, Expo, TypeScript) that keeps an ordered watc
 
 ## Current status
 
-Bootstrap only: tooling, standards and specs are in place; `App.tsx` is a placeholder. Planned features are described in `docs/specs/001-couch-queue-app.md`:
+App shell only: Veludo theme (dark, plum and rose), app icon and splash, header with the Couch Queue wordmark, and three tabs (`Fila`, `Já vistos`, `Manutenção`) with placeholder screens. Queue, history and maintenance features are not implemented yet; they are planned in `docs/specs/001-couch-queue-app.md`:
 
 - `Fila`: per-group queue, drag-and-drop order, filter by streaming service, mark as watched.
 - `Já vistos`: watched history per group, deleted automatically after a configurable period (default 3 months).
@@ -43,8 +43,9 @@ Husky is enabled by `npm install`. Commit messages must follow `type: message` (
 ## Project structure
 
 - `src/lib/` pure, tested logic
-- `src/components/` UI components
+- `src/components/` UI components: `common/` (header, tab bar) and one folder per tab
 - `src/theme/` colors and typography
+- `src/CouchQueueApp.tsx` app shell (fonts, splash, tabs)
 - `assets/` app icon, adaptive icon and splash images
 - `docs/` standards, specs, plans and app context
 
