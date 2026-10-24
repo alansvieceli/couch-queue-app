@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Couch Queue",
+    "slug": "couch-queue-app",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "predictiveBackGestureEnabled": false,
+      "softwareKeyboardLayoutMode": "resize",
+      "package": "br.com.couchqueue.app"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1A1222",
+          "resizeMode": "contain",
+          "imageWidth": 180
+        }
+      ],
+      "expo-sharing",
+      "expo-font"
+    ]
+  }
+}

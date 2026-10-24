@@ -77,6 +77,7 @@
 
 **Interfaces:**
 - Produces (`appState.ts`):
+
   ```ts
   export type TitleKind = 'series' | 'movie';
   export type Group = { id: string; name: string };
@@ -103,36 +104,63 @@
 test('default state has one group and the seven services in order', () => {
   const s = createDefaultState();
   expect(s.groups.map((g) => g.name)).toEqual(['Eu sozinha']);
-  expect(s.services.map((x) => x.name)).toEqual(
-    ['Netflix', 'HBO+', 'Paramount+', 'Amazon Prime', 'Apple TV', 'Disney+', 'Cinema']);
+  expect(s.services.map((x) => x.name)).toEqual([
+    'Netflix',
+    'HBO+',
+    'Paramount+',
+    'Amazon Prime',
+    'Apple TV',
+    'Disney+',
+    'Cinema',
+  ]);
   expect(s.titles).toEqual([]);
 });
-test('rejects zero groups', () => expect(validateAppState({ ...createDefaultState(), groups: [] }).ok).toBe(false));
-test('rejects a bad kind or watchedAt', () => { /* kind 'show' -> shape; watchedAt '2026-02-30' -> shape */ });
+test('rejects zero groups', () =>
+  expect(validateAppState({ ...createDefaultState(), groups: [] }).ok).toBe(false));
+test('rejects a bad kind or watchedAt', () => {
+  /* kind 'show' -> shape; watchedAt '2026-02-30' -> shape */
+});
 test('rejects titles with unknown service', () => {
   const s = makeState({ titles: [makeTitle({ serviceId: 'nope' })] });
   expect(validateAppState(s)).toEqual({ ok: false, reason: 'references' });
 });
-test('rejects titles with unknown group', () => { /* same with groupId -> 'references' */ });
-test('parseStoredState: null -> default, not invalid; garbage -> default, invalid', () => { /* ... */ });
+test('rejects titles with unknown group', () => {
+  /* same with groupId -> 'references' */
+});
+test('parseStoredState: null -> default, not invalid; garbage -> default, invalid', () => {
+  /* ... */
+});
 
 // groups.test.ts
-test('cannot delete the last group', () => expect(groupDeleteBlock(createDefaultState(), 'group-default')).toBe('last-group'));
-test('deleteGroup removes its titles', () => { /* two groups, title in g2; delete g2 -> titles [] */ });
+test('cannot delete the last group', () =>
+  expect(groupDeleteBlock(createDefaultState(), 'group-default')).toBe('last-group'));
+test('deleteGroup removes its titles', () => {
+  /* two groups, title in g2; delete g2 -> titles [] */
+});
 test('resolveGroupId falls back to the first group', () => {
-  const groups = [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }];
+  const groups = [
+    { id: 'a', name: 'A' },
+    { id: 'b', name: 'B' },
+  ];
   expect(resolveGroupId(groups, 'b')).toBe('b');
   expect(resolveGroupId(groups, 'gone')).toBe('a');
   expect(resolveGroupId(groups, null)).toBe('a');
 });
-test('blank names are ignored and names are trimmed', () => { /* addGroup(s,'x','  ') === s; '  Nós ' -> 'Nós' */ });
+test('blank names are ignored and names are trimmed', () => {
+  /* addGroup(s,'x','  ') === s; '  Nós ' -> 'Nós' */
+});
 
 // services.test.ts
-test('a service used by any title (queue or watched) cannot be deleted', () => { /* -> 'in-use' */ });
-test('an unused service can be deleted, even the last one', () => { /* services may be empty */ });
+test('a service used by any title (queue or watched) cannot be deleted', () => {
+  /* -> 'in-use' */
+});
+test('an unused service can be deleted, even the last one', () => {
+  /* services may be empty */
+});
 
 // dates.test.ts
-test('addMonths clamps to month end', () => expect(toDateKey(addMonths(new Date(2026, 4, 31), -3))).toBe('2026-02-28'));
+test('addMonths clamps to month end', () =>
+  expect(toDateKey(addMonths(new Date(2026, 4, 31), -3))).toBe('2026-02-28'));
 test('formatDateKey', () => expect(formatDateKey('2026-10-24')).toBe('24 out 2026'));
 ```
 
@@ -149,6 +177,7 @@ test('formatDateKey', () => expect(formatDateKey('2026-10-24')).toBe('24 out 202
 **Interfaces:**
 - Consumes: Task 3 types, `toDateKey`.
 - Produces:
+
   ```ts
   export type TitleDraft = { name: string; kind: TitleKind; serviceId: string };
   export function addTitle(state: AppState, id: string, groupId: string, draft: TitleDraft): AppState; // appended = end of queue
@@ -197,6 +226,7 @@ test('markWatched stores today as YYYY-MM-DD', () => { /* new Date(2026, 9, 24) 
 
 **Interfaces:**
 - Produces (`history.ts`):
+
   ```ts
   export type HistorySettings = { keepMonths: number | null }; // null = never delete
   export const HISTORY_MONTH_OPTIONS: readonly (number | null)[]; // [1, 3, 6, 12, null]

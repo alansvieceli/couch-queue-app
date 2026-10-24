@@ -35,11 +35,16 @@ One JSON document in AsyncStorage, key `@couch-queue-app/state/v1`:
 
 ```ts
 type AppState = {
-  groups:   { id: string; name: string }[];                         // at least 1
-  services: { id: string; name: string }[];                         // streaming services, may be empty
-  titles:   { id: string; groupId: string; name: string;
-              kind: 'series' | 'movie'; serviceId: string;
-              watchedAt: string | null }[];                         // ISO date when watched, null = in queue
+  groups: { id: string; name: string }[]; // at least 1
+  services: { id: string; name: string }[]; // streaming services, may be empty
+  titles: {
+    id: string;
+    groupId: string;
+    name: string;
+    kind: 'series' | 'movie';
+    serviceId: string;
+    watchedAt: string | null;
+  }[]; // ISO date when watched, null = in queue
 };
 ```
 

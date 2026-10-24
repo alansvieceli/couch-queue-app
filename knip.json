@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "project": [
+    "**/*.{js,jsx,ts,tsx}!",
+    "!jest.setup.ts!",
+    "!scripts/build-apk.js!",
+    "!src/lib/stateFixtures.ts!"
+  ],
+  "entry": ["src/lib/ids.ts!"],
+  "ignoreDependencies": [
+    "expo-updates",
+    "@expo-google-fonts/fraunces",
+    "@expo/vector-icons",
+    "@react-native-async-storage/async-storage",
+    "expo-constants",
+    "expo-crypto",
+    "expo-document-picker",
+    "expo-file-system",
+    "expo-status-bar",
+    "react-native-safe-area-context"
+  ]
+}
