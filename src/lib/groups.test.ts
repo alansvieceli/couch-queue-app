@@ -4,6 +4,7 @@ import {
   countGroupTitles,
   deleteGroup,
   groupDeleteBlock,
+  normalizeSelectedGroup,
   renameGroup,
   resolveGroupId,
 } from './groups';
@@ -70,4 +71,11 @@ test('blank names are ignored and names are trimmed', () => {
 test('renameGroup with an unknown id returns the same state', () => {
   const s = createDefaultState();
   expect(renameGroup(s, 'nope', 'Novo')).toBe(s);
+});
+
+test('normalizeSelectedGroup keeps only a non-empty string', () => {
+  expect(normalizeSelectedGroup('g1')).toBe('g1');
+  expect(normalizeSelectedGroup('  ')).toBeNull();
+  expect(normalizeSelectedGroup(42)).toBeNull();
+  expect(normalizeSelectedGroup(null)).toBeNull();
 });

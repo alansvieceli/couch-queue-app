@@ -10,6 +10,7 @@ type ActionButtonProps = {
   label: string;
   onPress: () => void;
   variant?: 'default' | 'danger';
+  disabled?: boolean;
 };
 
 export function ActionButton({
@@ -17,10 +18,17 @@ export function ActionButton({
   label,
   onPress,
   variant = 'default',
+  disabled,
 }: ActionButtonProps) {
   const color = variant === 'danger' ? colors.negative : colors.textPrimary;
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={styles.button}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      style={[styles.button, disabled ? styles.disabled : null]}
+    >
       <Ionicons color={color} name={icon} size={20} />
       <Text style={[styles.label, { color }]}>{label}</Text>
     </Pressable>
@@ -36,6 +44,9 @@ const styles = StyleSheet.create({
     gap: 10,
     minHeight: 44,
     paddingHorizontal: 12,
+  },
+  disabled: {
+    opacity: 0.5,
   },
   label: {
     ...typography.cardTitle,

@@ -4,10 +4,10 @@ Personal Android app (React Native, Expo, TypeScript) that keeps an ordered watc
 
 ## Current status
 
-Veludo theme, header and three tabs. `Manutenção` is implemented (groups, streamings, history period, backup, restore, reset); `Fila` and `Já vistos` are still placeholders. Planned behavior is in `docs/specs/001-couch-queue-app.md`:
+Veludo theme, header and three tabs. `Fila` and `Manutenção` are implemented; `Já vistos` is still a placeholder. Full behavior is in `docs/specs/001-couch-queue-app.md`:
 
-- `Fila`: per-group queue, drag-and-drop order, filter by streaming service, mark as watched.
-- `Já vistos`: watched history per group, deleted automatically after a configurable period (default 3 months).
+- `Fila` (done): group selector (remembered on the device), filter chips by streaming service, numbered queue with drag-and-drop reorder through the grip on the left (only with `Todos`), tap a row to edit or delete, `+` to add (name, `Série`/`Filme`, streaming), round check to mark as watched with a 5 s `Desfazer` toast that restores the exact position.
+- `Já vistos` (planned): watched history per group, deleted automatically after a configurable period (default 3 months).
 - `Manutenção` (done): groups, streaming services, history period, backup, restore and reset.
 
 ## Requirements
@@ -34,7 +34,11 @@ Runs Biome, TypeScript, Jest with coverage, and Knip. Related commands: `npm run
 
 ## Local data
 
-All data lives on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`); the history period is a device setting (`@couch-queue-app/history/v1`). `Manutenção` > `Dados` exports a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restores one after validating it.
+All data lives on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`); the history period (`@couch-queue-app/history/v1`) and the selected group (`@couch-queue-app/selected-group/v1`) are device settings outside the backup. `Manutenção` > `Dados` exports a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restores one after validating it.
+
+## Dependencies
+
+Besides Expo modules, drag and drop uses `react-native-gesture-handler`, `react-native-reanimated` (with `react-native-worklets`; `babel-preset-expo` adds its Babel plugin automatically) and `react-native-reorderable-list`.
 
 ## Commits
 
@@ -44,7 +48,7 @@ Husky is enabled by `npm install`. Commit messages must follow `type: message` (
 
 - `src/lib/` pure, tested logic
 - `src/hooks/` `useAppState` and `useDeviceSetting` (the only AsyncStorage users); `src/storage/` and `src/services/` device settings, backup files, hashing
-- `src/components/` UI components: `common/` (header, tab bar) and one folder per tab
+- `src/components/` UI components: `common/` (header, tab bar, modal shell, buttons, chips) and one folder per tab
 - `src/theme/` colors and typography
 - `src/CouchQueueApp.tsx` app shell (fonts, splash, tabs)
 - `assets/` app icon, adaptive icon and splash images

@@ -107,3 +107,5 @@ Bootstrap, branding and shell; state, maintenance and backup; Fila; Já vistos a
 
 - Dates are stored as ISO strings; retention compares calendar days in local time.
 - The remembered group falls back to the first group when it no longer exists.
+- Drag library: `react-native-reorderable-list` (0.18.x) instead of `react-native-draggable-flatlist`. The latter's last release (4.0.3, May 2025) predates Reanimated 4 and its sources use `Animated.SharedValue` / `Animated.AnimateProps`, which Reanimated 4's `Animated` namespace no longer exports; `react-native-reorderable-list` is actively maintained (release October 2026), pure JS on Gesture Handler + Reanimated (peers `>=2.12` / `>=3.12`), and bundles with Expo 56 / RN 0.85. No Babel config is needed: `babel-preset-expo` adds the worklets plugin automatically.
+- Queue positions are numbered within the visible (filtered) list.

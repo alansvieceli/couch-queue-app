@@ -6,11 +6,11 @@ Couch Queue is a personal Android app (React Native, Expo, TypeScript) for one u
 
 ## Status
 
-Shell plus the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. `Fila` and `Já vistos` are still placeholders. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
+Shell, the Fila tab (see "Fila tab" below) and the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. `Já vistos` is still a placeholder. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
 
 ## Planned
 
-- Per-group queue with manual drag-and-drop order, filter by streaming service, watched history auto-deleted after a configurable period (default 3 months).
+- `Já vistos` tab: watched history per group with `Voltar para a lista` and delete (retention already runs on start).
 
 ## Data
 
@@ -27,7 +27,11 @@ State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least on
 
 ## Queue behavior
 
-Rules live in `src/lib/titles.ts` (pure functions, no UI yet). The queue of a group is its titles with `watchedAt === null`, in `titles` array order; new titles go to the end. Marking watched only sets `watchedAt`, keeping the array slot, so undo (`unwatchTitle`) restores the exact previous position, while `returnToQueue` (from history) moves the title to the end. `reorderQueue` is applied only when the id list is exactly the group's current queue (no missing, extra, duplicate or filtered ids); otherwise state is unchanged. Only the group's queued slots are rewritten, other groups and watched titles stay in place. Watched history is sorted by `watchedAt` descending, ties by later array position first. The service filter list shows only services that have queued titles, in service order.
+Rules live in `src/lib/titles.ts` (pure functions). The queue of a group is its titles with `watchedAt === null`, in `titles` array order; new titles go to the end. Marking watched only sets `watchedAt`, keeping the array slot, so undo (`unwatchTitle`) restores the exact previous position, while `returnToQueue` (from history) moves the title to the end. `reorderQueue` is applied only when the id list is exactly the group's current queue (no missing, extra, duplicate or filtered ids); otherwise state is unchanged. Only the group's queued slots are rewritten, other groups and watched titles stay in place. Watched history is sorted by `watchedAt` descending, ties by later array position first. The service filter list shows only services that have queued titles, in service order.
+
+## Fila tab
+
+`src/components/queue/`: `GroupPicker` (card `Grupo` / name, opens a modal list), `ServiceFilter` (`Todos` + services in this group's queue; the filter is local to the screen, belongs to one group, and a service that leaves the queue counts as `Todos`), `QueueList` (`react-native-reorderable-list`) and `QueueRow`. Dragging starts from the grip (`Arrastar para reordenar`), which is shown and enabled only with `Todos`, so the reorder payload is always the full queue (`store.reorderQueue`). Positions are numbered in the visible list, the first in accent. Tapping a row opens `TitleFormModal` in edit mode (with `Excluir` and confirmation); `+` opens it to add to the end of the selected group's queue (the active filter's service is preselected). With no streamings the form says `Cadastre um streaming em Manutenção.` and cannot save. The round check marks watched without confirmation and shows `UndoToast` for 5 s; `Desfazer` calls `unwatchTitle` (same position); a new mark replaces the toast. `App.tsx` wraps everything in `GestureHandlerRootView`.
 
 ## History retention and backup
 
@@ -39,4 +43,4 @@ Rules live in `src/lib/titles.ts` (pure functions, no UI yet). The queue of a gr
 
 Groups and streamings: add (default names `Grupo N` / `Streaming N`), rename inline, delete with confirmation. Deleting the last group is blocked (`É preciso manter ao menos um grupo.`); deleting a group with titles asks to also delete them; a streaming used by titles cannot be deleted. History period chips: `1 mês`, `3 meses`, `6 meses`, `12 meses`, `Nunca apagar`; choosing a shorter period asks for confirmation only when titles would be deleted, then saves and purges. Backup shares a `.cqb` file, restore validates it and asks before replacing data, reset asks before clearing.
 
-Device settings (`useDeviceSetting`, AsyncStorage): history period at `@couch-queue-app/history/v1` (`{ keepMonths }`, `null` = never). The purge of old watched titles runs once per app start, only after both the data and the setting loaded, and never after a failed read of either. The selected-group setting arrives with the Fila tab.
+Device settings (`useDeviceSetting`, AsyncStorage): history period at `@couch-queue-app/history/v1` (`{ keepMonths }`, `null` = never). The purge of old watched titles runs once per app start, only after both the data and the setting loaded, and never after a failed read of either. Selected group at `@couch-queue-app/selected-group/v1` (non-empty string or `null`, `normalizeSelectedGroup`); `CouchQueueApp` resolves it with `resolveGroupId`, so a deleted or restored-away group falls back to the first group. `Fila` and (later) `Já vistos` share it.

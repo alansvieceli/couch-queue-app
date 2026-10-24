@@ -11,11 +11,13 @@ import { QueueScreen } from './components/queue/QueueScreen';
 import { WatchedScreen } from './components/watched/WatchedScreen';
 import { useAppState } from './hooks/useAppState';
 import { useDeviceSetting } from './hooks/useDeviceSetting';
+import { normalizeSelectedGroup, resolveGroupId } from './lib/groups';
 import { DEFAULT_HISTORY_SETTINGS, normalizeHistorySettings } from './lib/history';
 import { colors } from './theme/colors';
 import { typography } from './theme/typography';
 
 const HISTORY_KEY = '@couch-queue-app/history/v1';
+const SELECTED_GROUP_KEY = '@couch-queue-app/selected-group/v1';
 
 type AppTab = 'queue' | 'watched' | 'maintenance';
 
@@ -33,6 +35,13 @@ export function CouchQueueApp() {
     DEFAULT_HISTORY_SETTINGS,
     normalizeHistorySettings,
   );
+  const selectedGroup = useDeviceSetting<string | null>(
+    SELECTED_GROUP_KEY,
+    null,
+    normalizeSelectedGroup,
+  );
+  // A remembered group that was deleted (or removed by a restore) falls back to the first.
+  const selectedGroupId = resolveGroupId(store.state.groups, selectedGroup.value);
   const hasPurged = useRef(false);
   const [activeTab, setActiveTab] = useState<AppTab>('queue');
   const [fontsLoaded, fontError] = useFonts({ Fraunces_600SemiBold });
@@ -64,7 +73,13 @@ export function CouchQueueApp() {
       <AppHeader />
       {store.saveError ? <Text style={styles.error}>{store.saveError}</Text> : null}
       <View style={styles.content}>
-        {activeTab === 'queue' ? <QueueScreen /> : null}
+        {activeTab === 'queue' ? (
+          <QueueScreen
+            onSelectGroup={selectedGroup.save}
+            selectedGroupId={selectedGroupId}
+            store={store}
+          />
+        ) : null}
         {activeTab === 'watched' ? <WatchedScreen /> : null}
         {activeTab === 'maintenance' ? (
           <MaintenanceScreen history={history} store={store} />

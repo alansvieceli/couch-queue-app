@@ -39,3 +39,8 @@ export function deleteGroup(state: AppState, id: string): AppState {
 export function resolveGroupId(groups: Group[], id: string | null) {
   return groups.find((group) => group.id === id)?.id ?? groups[0].id;
 }
+
+// Device setting for the remembered group: any non-empty string, else none.
+export function normalizeSelectedGroup(raw: unknown): string | null {
+  return typeof raw === 'string' && raw.trim() !== '' ? raw : null;
+}
