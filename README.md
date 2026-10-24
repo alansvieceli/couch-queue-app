@@ -34,7 +34,7 @@ Runs Biome, TypeScript, Jest with coverage, and Knip. Related commands: `npm run
 
 ## Local data
 
-All data lives on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`); the history period (`@couch-queue-app/history/v1`) and the selected group (`@couch-queue-app/selected-group/v1`) are device settings outside the backup. `Manutenção` > `Dados` exports a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restores one after validating it.
+All data lives on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`); the history period (`@couch-queue-app/history/v1`) and the selected group (`@couch-queue-app/selected-group/v1`) are device settings outside the backup. `Manutenção` > `Dados` exports a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restores one after validating it. The release APK requests no Android permissions (the Expo defaults are blocked in `app.json`).
 
 ## Dependencies
 
