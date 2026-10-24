@@ -3,6 +3,7 @@ import {
   DEFAULT_HISTORY_SETTINGS,
   HISTORY_MONTH_OPTIONS,
   normalizeHistorySettings,
+  periodLabel,
   purgeOldWatched,
 } from './history';
 import { makeState, makeTitle } from './stateFixtures';
@@ -64,4 +65,14 @@ test('normalizeHistorySettings falls back to 3 for unknown values and accepts nu
   expect(normalizeHistorySettings({ keepMonths: '6' })).toEqual({ keepMonths: 3 });
   expect(normalizeHistorySettings({ keepMonths: null })).toEqual({ keepMonths: null });
   expect(normalizeHistorySettings({ keepMonths: 12 })).toEqual({ keepMonths: 12 });
+});
+
+test('labels every period option in pt-BR', () => {
+  expect(HISTORY_MONTH_OPTIONS.map(periodLabel)).toEqual([
+    '1 mês',
+    '3 meses',
+    '6 meses',
+    '12 meses',
+    'Nunca apagar',
+  ]);
 });

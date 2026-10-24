@@ -6,13 +6,5 @@
     "!scripts/build-apk.js!",
     "!src/lib/stateFixtures.ts!"
   ],
-  "entry": ["src/lib/ids.ts!"],
-  "ignoreDependencies": [
-    "expo-updates",
-    "@react-native-async-storage/async-storage",
-    "expo-constants",
-    "expo-crypto",
-    "expo-document-picker",
-    "expo-file-system"
-  ]
+  "ignoreDependencies": ["expo-updates", "expo-constants"]
 }

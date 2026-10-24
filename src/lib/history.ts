@@ -37,3 +37,8 @@ export function countExpiredWatched(
 ): number {
   return state.titles.length - kept(state, keepMonths, today).length;
 }
+
+export function periodLabel(keepMonths: number | null) {
+  if (keepMonths === null) return 'Nunca apagar';
+  return keepMonths === 1 ? '1 mês' : `${keepMonths} meses`;
+}

@@ -6,16 +6,15 @@ Couch Queue is a personal Android app (React Native, Expo, TypeScript) for one u
 
 ## Status
 
-App shell only: Veludo theme, branding (popcorn bucket icon, splash, header wordmark `Couch Queue`), and the three tabs `Fila`, `Já vistos`, `Manutenção` with placeholder screens. No queue, history or data feature is implemented yet. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
+Shell plus the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. `Fila` and `Já vistos` are still placeholders. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
 
 ## Planned
 
 - Per-group queue with manual drag-and-drop order, filter by streaming service, watched history auto-deleted after a configurable period (default 3 months).
-- Manutenção: groups, streaming services, history period, backup (`.cqb`), restore, reset.
 
 ## Data
 
-State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least one; default `Eu sozinha`, id `group-default`), `services` (default Netflix, HBO+, Paramount+, Amazon Prime, Apple TV, Disney+, Cinema; may be empty) and `titles`. A title has a group, a name, a kind (`series` or `movie`), a streaming service and `watchedAt` (`YYYY-MM-DD`, or `null` while in the queue). Validation rejects malformed data (`shape`) and titles pointing to an unknown group or service (`references`); invalid stored data falls back to the default state. Deleting a group also deletes its titles and the last group cannot be deleted; a service used by any title cannot be deleted. Names are trimmed and blank names are ignored. Persistence is not implemented yet.
+State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least one; default `Eu sozinha`, id `group-default`), `services` (default Netflix, HBO+, Paramount+, Amazon Prime, Apple TV, Disney+, Cinema; may be empty) and `titles`. A title has a group, a name, a kind (`series` or `movie`), a streaming service and `watchedAt` (`YYYY-MM-DD`, or `null` while in the queue). Validation rejects malformed data (`shape`) and titles pointing to an unknown group or service (`references`); invalid stored data falls back to the default state. Deleting a group also deletes its titles and the last group cannot be deleted; a service used by any title cannot be deleted. Names are trimmed and blank names are ignored. `useAppState` (`src/hooks/useAppState.ts`) loads and saves the document; after a failed read nothing is saved over the stored data, and unreadable data is kept under `@couch-queue-app/state/v1.invalid`.
 
 ## Constraints
 
@@ -32,6 +31,12 @@ Rules live in `src/lib/titles.ts` (pure functions, no UI yet). The queue of a gr
 
 ## History retention and backup
 
-Pure rules, no UI or storage yet. `src/lib/history.ts`: `purgeOldWatched` deletes watched titles (all groups) with `watchedAt` older than `today - keepMonths` (cutoff day is kept; queued titles never expire; same state object returned when nothing is removed). Options are 1, 3, 6, 12 months or `null` (never delete); default 3. `normalizeHistorySettings` accepts `{ keepMonths: null }` as "never" but a missing or unknown value gives the default 3.
+`src/lib/history.ts`: `purgeOldWatched` deletes watched titles (all groups) with `watchedAt` older than `today - keepMonths` (cutoff day is kept; queued titles never expire; same state object returned when nothing is removed). Options are 1, 3, 6, 12 months or `null` (never delete); default 3. `normalizeHistorySettings` accepts `{ keepMonths: null }` as "never" but a missing or unknown value gives the default 3.
 
 `src/lib/backup.ts`: the backup file is JSON named `couch-queue-backup-YYYY-MM-DD.cqb` with `format: "couch-queue-backup"`, `formatVersion: 1`, `app.name: "Couch Queue"`, `data` (the whole `AppState`) and a SHA-256 hash of the canonical JSON (the hash function is injected). Restore checks, in order: JSON validity, format, version, hash, then `validateAppState` (shape, at least one group, title references), returning a pt-BR error message for each failure and never a partial state.
+
+## Maintenance tab and device settings
+
+Groups and streamings: add (default names `Grupo N` / `Streaming N`), rename inline, delete with confirmation. Deleting the last group is blocked (`É preciso manter ao menos um grupo.`); deleting a group with titles asks to also delete them; a streaming used by titles cannot be deleted. History period chips: `1 mês`, `3 meses`, `6 meses`, `12 meses`, `Nunca apagar`; choosing a shorter period asks for confirmation only when titles would be deleted, then saves and purges. Backup shares a `.cqb` file, restore validates it and asks before replacing data, reset asks before clearing.
+
+Device settings (`useDeviceSetting`, AsyncStorage): history period at `@couch-queue-app/history/v1` (`{ keepMonths }`, `null` = never). The purge of old watched titles runs once per app start, only after both the data and the setting loaded, and never after a failed read of either. The selected-group setting arrives with the Fila tab.

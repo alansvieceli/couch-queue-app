@@ -4,11 +4,11 @@ Personal Android app (React Native, Expo, TypeScript) that keeps an ordered watc
 
 ## Current status
 
-App shell only: Veludo theme (dark, plum and rose), app icon and splash, header with the Couch Queue wordmark, and three tabs (`Fila`, `Já vistos`, `Manutenção`) with placeholder screens. Queue, history and maintenance features are not implemented yet; they are planned in `docs/specs/001-couch-queue-app.md`:
+Veludo theme, header and three tabs. `Manutenção` is implemented (groups, streamings, history period, backup, restore, reset); `Fila` and `Já vistos` are still placeholders. Planned behavior is in `docs/specs/001-couch-queue-app.md`:
 
 - `Fila`: per-group queue, drag-and-drop order, filter by streaming service, mark as watched.
 - `Já vistos`: watched history per group, deleted automatically after a configurable period (default 3 months).
-- `Manutenção`: groups, streaming services, history period, backup, restore and reset.
+- `Manutenção` (done): groups, streaming services, history period, backup, restore and reset.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ Runs Biome, TypeScript, Jest with coverage, and Knip. Related commands: `npm run
 
 ## Local data
 
-All data will live on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`). `Manutenção` > `Dados` will export a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restore one after validating it. Not implemented yet.
+All data lives on the device in one JSON document (AsyncStorage key `@couch-queue-app/state/v1`); the history period is a device setting (`@couch-queue-app/history/v1`). `Manutenção` > `Dados` exports a `couch-queue-backup-AAAA-MM-DD.cqb` file (JSON with a SHA-256 integrity hash) and restores one after validating it.
 
 ## Commits
 
@@ -43,6 +43,7 @@ Husky is enabled by `npm install`. Commit messages must follow `type: message` (
 ## Project structure
 
 - `src/lib/` pure, tested logic
+- `src/hooks/` `useAppState` and `useDeviceSetting` (the only AsyncStorage users); `src/storage/` and `src/services/` device settings, backup files, hashing
 - `src/components/` UI components: `common/` (header, tab bar) and one folder per tab
 - `src/theme/` colors and typography
 - `src/CouchQueueApp.tsx` app shell (fonts, splash, tabs)
