@@ -28,7 +28,9 @@ import {
 } from '../lib/titles';
 
 const STORAGE_KEY = '@couch-queue-app/state/v1';
-const LOAD_ERROR = 'Não foi possível ler os dados salvos.';
+const LOAD_ERROR = 'Não foi possível ler os dados salvos. Alterações não serão salvas.';
+const INVALID_NOTICE =
+  'Os dados salvos estavam corrompidos e foram substituídos pelo padrão. Restaure um backup.';
 const SAVE_ERROR = 'Não foi possível salvar os dados.';
 
 export function useAppState() {
@@ -36,6 +38,7 @@ export function useAppState() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
+  const [loadNotice, setLoadNotice] = useState<string | null>(null);
   // A failed read must never be followed by a save that overwrites the stored data.
   const canSave = useRef(true);
   // The start-up cleanup can fire in the same commit as the load; it must see the
@@ -49,6 +52,7 @@ export function useAppState() {
         if (loaded.wasInvalid && raw !== null) {
           await AsyncStorage.setItem(`${STORAGE_KEY}.invalid`, raw);
         }
+        if (loaded.wasInvalid) setLoadNotice(INVALID_NOTICE);
         latest.current = loaded.state;
         setState(loaded.state);
       })
@@ -74,6 +78,7 @@ export function useAppState() {
     isLoaded,
     loadFailed,
     saveError,
+    loadNotice,
     addGroup: (name: string) => update(addGroup(state, createId('group'), name)),
     renameGroup: (id: string, name: string) => update(renameGroup(state, id, name)),
     deleteGroup: (id: string) => update(deleteGroup(state, id)),

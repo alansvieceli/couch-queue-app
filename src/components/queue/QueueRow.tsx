@@ -53,7 +53,7 @@ export function QueueRow({
         <TitleMeta kind={title.kind} serviceName={serviceName} />
       </View>
       <Pressable
-        accessibilityLabel="Marcar como visto"
+        accessibilityLabel={`Marcar ${title.name} como visto`}
         accessibilityRole="button"
         onPress={onMarkWatched}
         style={styles.checkTarget}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 44,
     justifyContent: 'center',
-    width: 36,
+    width: 44,
   },
   position: {
     color: colors.textSecondary,

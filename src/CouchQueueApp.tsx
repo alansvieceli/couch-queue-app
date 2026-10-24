@@ -46,7 +46,8 @@ export function CouchQueueApp() {
   const [activeTab, setActiveTab] = useState<AppTab>('queue');
   const [fontsLoaded, fontError] = useFonts({ Fraunces_600SemiBold });
   // A font failure falls back to the system serif instead of holding the splash.
-  const isReady = store.isLoaded && (fontsLoaded || fontError !== null);
+  const isReady =
+    store.isLoaded && selectedGroup.isLoaded && (fontsLoaded || fontError !== null);
 
   useEffect(() => {
     if (isReady) SplashScreen.hideAsync();
@@ -61,6 +62,8 @@ export function CouchQueueApp() {
     store.purgeOldWatched(history.value.keepMonths);
   }, [store, history.isLoaded, history.loadFailed, history.value.keepMonths]);
 
+  const banner = store.saveError ?? store.loadNotice;
+
   if (!isReady) return null;
 
   return (
@@ -71,7 +74,7 @@ export function CouchQueueApp() {
       ]}
     >
       <AppHeader />
-      {store.saveError ? <Text style={styles.error}>{store.saveError}</Text> : null}
+      {banner ? <Text style={styles.error}>{banner}</Text> : null}
       <View style={styles.content}>
         {activeTab === 'queue' ? (
           <QueueScreen

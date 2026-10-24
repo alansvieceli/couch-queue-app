@@ -13,6 +13,9 @@ import { GroupsSection } from './GroupsSection';
 import { HistorySection } from './HistorySection';
 import { ServicesSection } from './ServicesSection';
 
+const LOAD_FAILED_TEXT =
+  'Os dados salvos não puderam ser lidos. Reinicie o app antes de continuar.';
+
 export function MaintenanceScreen({
   store,
   history,
@@ -37,6 +40,10 @@ export function MaintenanceScreen({
   }
 
   async function handleBackup() {
+    if (store.loadFailed) {
+      setStatus({ kind: 'error', text: LOAD_FAILED_TEXT });
+      return;
+    }
     try {
       const now = new Date();
       const text = await createBackupText(store.state, now, sha256);
@@ -48,6 +55,10 @@ export function MaintenanceScreen({
   }
 
   async function handleRestore() {
+    if (store.loadFailed) {
+      setStatus({ kind: 'error', text: LOAD_FAILED_TEXT });
+      return;
+    }
     try {
       const text = await pickBackupText();
       if (text === null) return;
@@ -70,6 +81,10 @@ export function MaintenanceScreen({
   }
 
   async function handleReset() {
+    if (store.loadFailed) {
+      setStatus({ kind: 'error', text: LOAD_FAILED_TEXT });
+      return;
+    }
     const confirmed = await confirmAction(
       'Limpar tudo',
       'Todos os dados serão apagados e o app volta ao estado inicial.',

@@ -62,4 +62,4 @@ Verificações que os testes unitários não cobrem. Rode no emulador ou em um a
 
 - [ ] Fonte do sistema no tamanho máximo: nenhuma tela corta texto ou botão, e os alvos de toque têm pelo menos 44 dp.
 - [ ] Largura estreita (emulador pequeno ou janela reduzida): chips, linhas e modais continuam legíveis, sem rolagem horizontal.
-- [ ] Teclado nos modais (grupo, formulário de título): `Salvar`/`Cancelar` continuam alcançáveis com o teclado aberto.
+- [ ] Teclado nos modais (grupo, formulário de título): o campo e os botões do modal continuam alcançáveis com o teclado aberto.

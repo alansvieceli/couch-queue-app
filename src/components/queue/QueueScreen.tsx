@@ -40,6 +40,10 @@ export function QueueScreen({
     available.some((service) => service.id === filter.serviceId)
       ? filter.serviceId
       : null;
+  // A cleared filter must not return when its service is back in the queue.
+  useEffect(() => {
+    if (filter && serviceId === null) setFilter(null);
+  }, [filter, serviceId]);
   const titles = queueFor(state, selectedGroupId, serviceId);
 
   // Each new mark is a new object, so it restarts the timer and replaces the toast.
@@ -63,7 +67,10 @@ export function QueueScreen({
     <View style={styles.container}>
       <GroupPicker
         groups={state.groups}
-        onSelect={onSelectGroup}
+        onSelect={(id) => {
+          setFilter(null);
+          onSelectGroup(id);
+        }}
         selectedId={selectedGroupId}
       />
       <View style={styles.filter}>

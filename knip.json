@@ -6,5 +6,5 @@
     "!scripts/build-apk.js!",
     "!src/lib/stateFixtures.ts!"
   ],
-  "ignoreDependencies": ["expo-updates", "expo-constants"]
+  "ignoreDependencies": ["expo-updates"]
 }

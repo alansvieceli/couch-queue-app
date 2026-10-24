@@ -64,7 +64,10 @@ export function TitleFormModal({
       <Text style={styles.label}>Nome</Text>
       <TextInput
         accessibilityLabel="Nome"
-        onChangeText={setName}
+        onChangeText={(text) => {
+          setName(text);
+          setError(null);
+        }}
         placeholder="Nome"
         placeholderTextColor={colors.textSecondary}
         style={styles.input}
