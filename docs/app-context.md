@@ -13,6 +13,10 @@ App shell only: Veludo theme, branding (popcorn bucket icon, splash, header word
 - Per-group queue with manual drag-and-drop order, filter by streaming service, watched history auto-deleted after a configurable period (default 3 months).
 - Manutenção: groups, streaming services, history period, backup (`.cqb`), restore, reset.
 
+## Data
+
+State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least one; default `Eu sozinha`, id `group-default`), `services` (default Netflix, HBO+, Paramount+, Amazon Prime, Apple TV, Disney+, Cinema; may be empty) and `titles`. A title has a group, a name, a kind (`series` or `movie`), a streaming service and `watchedAt` (`YYYY-MM-DD`, or `null` while in the queue). Validation rejects malformed data (`shape`) and titles pointing to an unknown group or service (`references`); invalid stored data falls back to the default state. Deleting a group also deletes its titles and the last group cannot be deleted; a service used by any title cannot be deleted. Names are trimmed and blank names are ignored. Persistence, queue ordering and history are not implemented yet.
+
 ## Constraints
 
 - Android only.
