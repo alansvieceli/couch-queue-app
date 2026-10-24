@@ -1,5 +1,15 @@
-import type { ReactNode } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { type ReactNode, useEffect, useState } from 'react';
+import {
+  Keyboard,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
@@ -7,16 +17,56 @@ import { IconButton } from './IconButton';
 
 type ModalShellProps = { title: string; onClose: () => void; children: ReactNode };
 
+const EDGE_GAP = 24;
+
+function useKeyboardHeight() {
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardDidShow', (event) =>
+      setHeight(event.endCoordinates.height),
+    );
+    const hide = Keyboard.addListener('keyboardDidHide', () => setHeight(0));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+  return height;
+}
+
+// A dialog centered in the space the keyboard leaves free, so fields and buttons never
+// end up behind the keyboard or the system bars. The card shrinks and scrolls instead.
 export function ModalShell({ title, onClose, children }: ModalShellProps) {
+  const insets = useSafeAreaInsets();
+  const { height: windowHeight } = useWindowDimensions();
+  const keyboardHeight = useKeyboardHeight();
+  const availableHeight =
+    windowHeight - insets.top - insets.bottom - keyboardHeight - EDGE_GAP * 2;
+
   return (
-    <Modal animationType="fade" onRequestClose={onClose} transparent visible>
-      <View style={styles.overlay}>
+    <Modal
+      animationType="fade"
+      navigationBarTranslucent
+      onRequestClose={onClose}
+      statusBarTranslucent
+      transparent
+      visible
+    >
+      <View
+        style={[
+          styles.overlay,
+          {
+            paddingBottom: insets.bottom + keyboardHeight + EDGE_GAP,
+            paddingTop: insets.top + EDGE_GAP,
+          },
+        ]}
+      >
         <Pressable
           accessibilityLabel="Fechar"
           onPress={onClose}
           style={styles.backdrop}
         />
-        <View style={styles.card}>
+        <View style={[styles.card, { maxHeight: Math.max(availableHeight, 160) }]}>
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
             <IconButton icon="close" label="Fechar" onPress={onClose} />
@@ -24,6 +74,7 @@ export function ModalShell({ title, onClose, children }: ModalShellProps) {
           <ScrollView
             contentContainerStyle={styles.body}
             keyboardShouldPersistTaps="handled"
+            style={styles.scroll}
           >
             {children}
           </ScrollView>
@@ -36,7 +87,8 @@ export function ModalShell({ title, onClose, children }: ModalShellProps) {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   backdrop: {
     backgroundColor: colors.overlay,
@@ -48,9 +100,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.background,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: '90%',
+    borderRadius: 24,
     paddingHorizontal: 20,
     paddingTop: 12,
   },
@@ -63,8 +113,11 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     ...typography.screenTitle,
   },
+  scroll: {
+    flexShrink: 1,
+  },
   body: {
     gap: 12,
-    paddingBottom: 24,
+    paddingBottom: 20,
   },
 });

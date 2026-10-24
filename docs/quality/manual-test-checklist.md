@@ -22,7 +22,7 @@ Verificações que os testes unitários não cobrem. Rode no emulador ou em um a
 - [ ] Marcar como visto: aparece `"<nome>" foi para Já vistos` por cerca de 5 s; `Desfazer` devolve o título para a mesma posição; marcar outro título substitui o aviso.
 - [ ] Fila vazia mostra `Nada na fila. Toque em + para adicionar.`.
 - [ ] Nomes longos ficam em uma linha com reticências; com fonte grande, botões continuam acessíveis e o aviso não cobre o `+`.
-- [ ] Teclado: no formulário de título, com o teclado aberto, o botão `Salvar` continua visível ou alcançável. O `ModalShell` não trata o teclado (risco conhecido); se `Salvar` ficar escondido, adicionar tratamento de teclado.
+- [ ] Janelas (seleção de grupo e formulário de título): aparecem como caixa centralizada, acima dos botões de navegação do sistema. Com o teclado aberto, a caixa se ajusta ao espaço livre e `Salvar` continua visível, sem ficar atrás do teclado.
 
 ## 2. Já vistos
 

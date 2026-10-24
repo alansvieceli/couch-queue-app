@@ -17,6 +17,7 @@ State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least on
 - Android only.
 - All data is stored locally on the device (AsyncStorage key `@couch-queue-app/state/v1`). No backend, hosting, authentication or notifications.
 - Single user.
+- Dialogs (group picker, title form) are one shared centered modal that shrinks to the space left by the keyboard and the system bars, so nothing sits behind them.
 - Release APK requests no Android permissions: `app.json` blocks the Expo defaults (`INTERNET`, `SYSTEM_ALERT_WINDOW`, external storage, `VIBRATE`) because the app is fully offline and uses only the system pickers and share sheet.
 - Visual identity: Veludo, dark only (plum background, rose accent, serif titles).
 - UI copy in Brazilian Portuguese, following `docs/standards/ui-copy-policy.md`.
