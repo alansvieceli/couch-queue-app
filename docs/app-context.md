@@ -6,7 +6,7 @@ Couch Queue is a personal Android app (React Native, Expo, TypeScript) for one u
 
 ## Status
 
-Shell, the Fila tab (see "Fila tab" below) and the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. `Já vistos` is still a placeholder. See `docs/specs/001-couch-queue-app.md` for the planned behavior.
+Shell, the Fila tab (see "Fila tab" below) and the Manutenção tab: groups and streamings (add, inline rename, delete with the rules below), history period, backup, restore and reset. The `Já vistos` tab is also done (see below). See `docs/specs/001-couch-queue-app.md` for the planned behavior.
 
 ## Planned
 
@@ -28,6 +28,10 @@ State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least on
 ## Queue behavior
 
 Rules live in `src/lib/titles.ts` (pure functions). The queue of a group is its titles with `watchedAt === null`, in `titles` array order; new titles go to the end. Marking watched only sets `watchedAt`, keeping the array slot, so undo (`unwatchTitle`) restores the exact previous position, while `returnToQueue` (from history) moves the title to the end. `reorderQueue` is applied only when the id list is exactly the group's current queue (no missing, extra, duplicate or filtered ids); otherwise state is unchanged. Only the group's queued slots are rewritten, other groups and watched titles stay in place. Watched history is sorted by `watchedAt` descending, ties by later array position first. The service filter list shows only services that have queued titles, in service order.
+
+## Já vistos tab
+
+`src/components/watched/`: `WatchedScreen` (reuses `GroupPicker` and the shared selected group; `FlatList` of `watchedFor`; empty text `Nenhum título visto ainda.`) and `WatchedRow` (name, `TitleMeta` service tag + kind shared with `QueueRow`, `Visto em <formatDateKey>`, `Voltar para a lista` calls `returnToQueue`, trash asks `Excluir "<nome>"?` then calls `deleteTitle`).
 
 ## Fila tab
 

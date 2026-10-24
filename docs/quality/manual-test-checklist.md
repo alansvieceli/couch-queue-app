@@ -15,3 +15,12 @@ Verificações que os testes unitários não cobrem. Rode no emulador ou em um a
 - [ ] Marcar como visto: aparece `"<nome>" foi para Já vistos` por cerca de 5 s; `Desfazer` devolve o título para a mesma posição; marcar outro título substitui o aviso.
 - [ ] Fila vazia mostra `Nada na fila. Toque em + para adicionar.`.
 - [ ] Nomes longos ficam em uma linha com reticências; com fonte grande, botões continuam acessíveis e o aviso não cobre o `+`.
+
+## Já vistos
+
+- [ ] Sem títulos vistos: mostra `Nenhum título visto ainda.`.
+- [ ] Trocar o grupo no card `Grupo` mostra o histórico do outro grupo; a escolha é a mesma da Fila.
+- [ ] Cada linha mostra nome (uma linha), streaming, `Série`/`Filme` e `Visto em <dia> <mês> <ano>`; o mais recente aparece primeiro.
+- [ ] `Voltar para a lista` tira o título do histórico e o coloca no fim da Fila do grupo.
+- [ ] Lixeira pede `Excluir "<nome>"?`; `Cancelar` mantém, `Excluir` remove.
+- [ ] Com fonte grande e nome longo, a linha não corta os botões e todos os alvos têm pelo menos 44 dp.

@@ -5,7 +5,7 @@ import { useReorderableDrag } from 'react-native-reorderable-list';
 import type { Title } from '../../lib/appState';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
-import { kindLabels } from './kindLabels';
+import { TitleMeta } from './TitleMeta';
 
 type QueueRowProps = {
   title: Title;
@@ -50,12 +50,7 @@ export function QueueRow({
         <Text numberOfLines={1} style={styles.name}>
           {title.name}
         </Text>
-        <View style={styles.meta}>
-          <Text numberOfLines={1} style={styles.tag}>
-            {serviceName}
-          </Text>
-          <Text style={styles.kind}>{kindLabels[title.kind]}</Text>
-        </View>
+        <TitleMeta kind={title.kind} serviceName={serviceName} />
       </View>
       <Pressable
         accessibilityLabel="Marcar como visto"
@@ -105,24 +100,6 @@ const styles = StyleSheet.create({
   name: {
     color: colors.textPrimary,
     ...typography.cardTitle,
-  },
-  meta: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  tag: {
-    backgroundColor: colors.surfaceMuted,
-    borderRadius: 8,
-    color: colors.textPrimary,
-    flexShrink: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    ...typography.bodySmall,
-  },
-  kind: {
-    color: colors.textSecondary,
-    ...typography.bodySmall,
   },
   checkTarget: {
     alignItems: 'center',

@@ -80,7 +80,13 @@ export function CouchQueueApp() {
             store={store}
           />
         ) : null}
-        {activeTab === 'watched' ? <WatchedScreen /> : null}
+        {activeTab === 'watched' ? (
+          <WatchedScreen
+            onSelectGroup={selectedGroup.save}
+            selectedGroupId={selectedGroupId}
+            store={store}
+          />
+        ) : null}
         {activeTab === 'maintenance' ? (
           <MaintenanceScreen history={history} store={store} />
         ) : null}

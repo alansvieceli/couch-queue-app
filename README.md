@@ -4,10 +4,10 @@ Personal Android app (React Native, Expo, TypeScript) that keeps an ordered watc
 
 ## Current status
 
-Veludo theme, header and three tabs. `Fila` and `Manutenção` are implemented; `Já vistos` is still a placeholder. Full behavior is in `docs/specs/001-couch-queue-app.md`:
+Veludo theme, header and three tabs. All three tabs are implemented. Full behavior is in `docs/specs/001-couch-queue-app.md`:
 
 - `Fila` (done): group selector (remembered on the device), filter chips by streaming service, numbered queue with drag-and-drop reorder through the grip on the left (only with `Todos`), tap a row to edit or delete, `+` to add (name, `Série`/`Filme`, streaming), round check to mark as watched with a 5 s `Desfazer` toast that restores the exact position.
-- `Já vistos` (planned): watched history per group, deleted automatically after a configurable period (default 3 months).
+- `Já vistos` (done): watched history per group (newest first) with `Visto em <data>`, `Voltar para a lista` (goes to the end of the queue) and delete with confirmation; old entries are deleted automatically after a configurable period (default 3 months).
 - `Manutenção` (done): groups, streaming services, history period, backup, restore and reset.
 
 ## Requirements
