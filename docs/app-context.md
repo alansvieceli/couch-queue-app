@@ -15,7 +15,7 @@ App shell only: Veludo theme, branding (popcorn bucket icon, splash, header word
 
 ## Data
 
-State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least one; default `Eu sozinha`, id `group-default`), `services` (default Netflix, HBO+, Paramount+, Amazon Prime, Apple TV, Disney+, Cinema; may be empty) and `titles`. A title has a group, a name, a kind (`series` or `movie`), a streaming service and `watchedAt` (`YYYY-MM-DD`, or `null` while in the queue). Validation rejects malformed data (`shape`) and titles pointing to an unknown group or service (`references`); invalid stored data falls back to the default state. Deleting a group also deletes its titles and the last group cannot be deleted; a service used by any title cannot be deleted. Names are trimmed and blank names are ignored. Persistence, queue ordering and history are not implemented yet.
+State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least one; default `Eu sozinha`, id `group-default`), `services` (default Netflix, HBO+, Paramount+, Amazon Prime, Apple TV, Disney+, Cinema; may be empty) and `titles`. A title has a group, a name, a kind (`series` or `movie`), a streaming service and `watchedAt` (`YYYY-MM-DD`, or `null` while in the queue). Validation rejects malformed data (`shape`) and titles pointing to an unknown group or service (`references`); invalid stored data falls back to the default state. Deleting a group also deletes its titles and the last group cannot be deleted; a service used by any title cannot be deleted. Names are trimmed and blank names are ignored. Persistence and history cleanup are not implemented yet.
 
 ## Constraints
 
@@ -25,3 +25,7 @@ State is one document, `AppState` (`src/lib/appState.ts`): `groups` (at least on
 - Visual identity: Veludo, dark only (plum background, rose accent, serif titles).
 - UI copy in Brazilian Portuguese, following `docs/standards/ui-copy-policy.md`.
 - Tooling: TypeScript strict, Biome, Knip, Jest.
+
+## Queue behavior
+
+Rules live in `src/lib/titles.ts` (pure functions, no UI yet). The queue of a group is its titles with `watchedAt === null`, in `titles` array order; new titles go to the end. Marking watched only sets `watchedAt`, keeping the array slot, so undo (`unwatchTitle`) restores the exact previous position, while `returnToQueue` (from history) moves the title to the end. `reorderQueue` is applied only when the id list is exactly the group's current queue (no missing, extra, duplicate or filtered ids); otherwise state is unchanged. Only the group's queued slots are rewritten, other groups and watched titles stay in place. Watched history is sorted by `watchedAt` descending, ties by later array position first. The service filter list shows only services that have queued titles, in service order.

@@ -1,8 +1,8 @@
 import { isDateKey } from './dates';
 
-type TitleKind = 'series' | 'movie';
+export type TitleKind = 'series' | 'movie';
 export type Group = { id: string; name: string };
-type Service = { id: string; name: string };
+export type Service = { id: string; name: string };
 export type Title = {
   id: string;
   groupId: string;
